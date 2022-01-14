@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for session in object_list %}
+        <tr>
+            <td>{{ session.title }}</td>
+            <td style="text-align:right;">
+                <a href="{% url 'detail' session.id %}" class="btn btn-info">明細</a>
+            </td>
+        </tr>
+    {% endfor %}
+</body>
+</html>

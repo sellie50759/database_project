@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <ul class="list-group list-group-flush">
+        <li class="list-group-item">標題:{{ object.title }}</li>
+        <li class="list-group-item">發起者:{{ object.organizer }}</li>
+        <li class="list-group-item">開始日期:{{ object.created|date:'Y/m/d' }}</li>
+        <li class="list-group-item">結束日期:{{ object.created|date:'Y/m/d' }}</li>
+        <li class="list-group-item">發起者:{{ object.agree }}</li>
+        <li class="list-group-item">發起者:{{ object.disagree }}</li>
+        <li class="list-group-item">發起者:{{ object.total }}</li>
+        <li class="list-group-item">發起者:{{ object.description }}</li>
+    </ul>
+    <a href="{% url 'vote' object.id %}" class="btn btn-info">投票</a>
+</body>
+</html>
