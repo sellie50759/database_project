@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import LoginForm , RegisterForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .forms import LoginForm, RegisterForm
 from django.views.generic import (
     CreateView,
 )
@@ -33,7 +34,8 @@ class Login(View):
 
 
 class Logout(View):
+    @method_decorator(login_required)
     def get(self, request):
         logout(request)
-        return redirect('account/login')  # 重新導向到登入畫面
+        return redirect('login')  # 重新導向到登入畫面
 # Create your views here.

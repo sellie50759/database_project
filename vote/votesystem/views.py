@@ -1,7 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import VoteForm, VoteSessionCreateForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import *
 from django.views.generic import (
     ListView,
@@ -21,10 +23,12 @@ class VoteDetailView(LoginRequiredMixin, DetailView):
 
 
 class Vote(View):
+    @method_decorator(login_required)
     def get(self, request, pk):
         form = VoteForm()
         return render(request, "vote.html", locals())
 
+    @method_decorator(login_required)
     def post(self, request, pk):
         form = VoteForm(request.POST)
         if form.is_valid():
@@ -56,10 +60,12 @@ class Vote(View):
 
 
 class CreateVoteSession(View):
+    @method_decorator(login_required)
     def get(self, request):
         form = VoteSessionCreateForm()
         return render(request, "create.html", locals())
 
+    @method_decorator(login_required)
     def post(self, request):
         user = request.user
         form = VoteSessionCreateForm(request.POST)

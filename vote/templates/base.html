@@ -1,0 +1,87 @@
+{% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    {% bootstrap_javascript %}
+
+    {% block head %}
+    {% endblock %}
+    <title>{% block title %}{% endblock %}嘉義大學場地借用系統</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% bootstrap_css %}
+    <style>
+      @media screen and (max-width:600px){
+        .navbar-brand{font-size:12px;}
+      }
+      ul.menu {
+        list-style-type: none;
+        margin: 20px;
+        padding: 0;
+        overflow: hidden;
+        background-color: #cccccc;
+        border: 1px solid;
+        border-radius:30px;
+      }
+
+      li.menu {
+        float: left;
+        width:25%;
+        display: block;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        font-size: 25px;
+        border-right:1px solid #878787;
+        }
+
+      a.menu{
+        display: block;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        font-size: 25px
+      }
+
+      li.menu a:hover {
+        background-color: gray;
+      }
+
+      a.fixpadding{
+        padding: 17.5px;
+      }
+
+      .navbar-header {
+        float: left;
+        width: 70%;
+      }
+    </style>
+    
+    
+  </head>
+  <body id="body" style="margin-top: 60px;">
+        <div>
+            {% if request.user.is_authenticated %}
+              <h1><a href='/account/logout'>登出</a></h1>
+            {% else %}
+              <h1><a href="/account/login">登入</a></h1>
+            {% endif %}
+        </div>
+    <div class="fluid container">
+      {% if request.session.alert %}
+        <div class="alert alert-{{ request.session.alert.type }}" role="alert" style="font-size: 20px">
+          {{ request.session.alert.message | safe }}
+        </div>
+      {% endif %}
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    {% block js %}
+    {% endblock %}
+  </body>
+</html>
