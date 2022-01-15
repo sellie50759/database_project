@@ -28,11 +28,30 @@ class Vote(View):
     def post(self, request, pk):
         form = VoteForm(request.POST)
         if form.is_valid():
+            isvote = False
+            session = VoteSession.objects.get(id=pk)
             form = form.save(commit=False)
             form.voter = request.user
-            form.session = VoteSession.objects.get(id=pk)
-            form.save()
-            redirect("/votesystem")
+            form.session = session
+            queryset = VoteRecord.objects.filter(session=form.session)
+            if queryset:
+                for voteform in queryset:
+                    if voteform.voter == request.user: #代表已經對這個session進行過投票
+                        isvote=True
+                        break
+            if isvote:
+                pass
+            else:
+                Agree = form.is_agree
+                if Agree:
+                    session.agree +=1
+                else :
+                    session.disagree+=1
+                session.total+=1
+                session.save()
+                form.save()
+            detail = "/votesystem/detail/" + str(pk)
+            return redirect(detail)
         return redirect("/account/login")
 
 

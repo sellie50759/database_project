@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import LoginForm
+from .forms import LoginForm , RegisterForm
 from django.views.generic import (
     CreateView,
 )
@@ -11,7 +11,7 @@ from django.views.generic import (
 
 class UserCreateView(CreateView):
     model = User
-    form_class = UserCreationForm  # 使用的表單類別
+    form_class = RegisterForm  # 使用的表單類別
     template_name = 'create.html'
     success_url = '/account'  # 儲存成功後要導向的網址
 

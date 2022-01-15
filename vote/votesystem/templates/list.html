@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    {% for session in object_list %}
-        <tr>
-            <td>{{ session.title }}</td>
-            <td style="text-align:right;">
-                <a href="{% url 'detail' session.id %}" class="btn btn-info">明細</a>
-            </td>
-        </tr>
-    {% endfor %}
-</body>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">發起者</th>
+                <th scope="col">議題</th>
+                <th scope="col">詳細內容</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in object_list %}
+            <tr>
+                <th scope="row">{{ session.organizer }}</th>
+                <th>{{ session.title }}</th>
+                <th><a href="{% url 'detail' session.id %}" class="btn btn-info">明細</a></th>
+            </tr>
+            {% endfor %}
+        </tbody>
 </html>

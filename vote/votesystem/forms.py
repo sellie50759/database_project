@@ -7,11 +7,11 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
-class VoteForm(ModelForm):
+class VoteForm(forms.ModelForm):
+    is_agree = forms.BooleanField(required=False,label="同意")
     class Meta:
         model = VoteRecord
         fields = ["is_agree"]
-        labels = {"is_agree": "投票"}
 
 
 class VoteSessionCreateForm(ModelForm):
