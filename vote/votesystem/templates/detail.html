@@ -1,33 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col">標題</th>
                 <th scope="col">議題內容</th>
                 <th scope="col">開始日期</th>
                 <th scope="col">結束日期</th>
                 <th scope="col">同意票</th>
                 <th scope="col">不同意票</th>
                 <th scope="col">總票數</th>
-                <th scope="col">投票</th>
+                {% if canvote %}
+                    <th scope="col">投票</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
             <tr>
+                <th scope="row">{{ object.title }}</th>
                 <th scope="row">{{ object.description }}</th>
                 <th>{{ object.start_time }}</th>
                 <th>{{ object.end_time }}</th>
                 <th><font color="red">{{ object.agree }}</font></th>
                 <th><font color="green">{{ object.disagree }}</font></th>
                 <th>{{ object.total }}</th>
-                <th><a href="{% url 'vote' object.id %}" class="btn btn-info">投票</a></th>
+                {% if canvote %}
+                    <th><a href="{% url 'vote' object.id %}" class="btn btn-info">投票</a></th>
+                {% endif %}
             </tr>
         </tbody>
-</html>
+    </table>
+{% endblock %}

@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import VoteForm, VoteSessionCreateForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -11,15 +10,24 @@ from django.views.generic import (
 )
 
 
-class VoteListView(LoginRequiredMixin, ListView):
+class VoteListView(ListView):
     model = VoteSession
     queryset = VoteSession.objects.all()
     template_name = 'list.html'
 
 
-class VoteDetailView(LoginRequiredMixin, DetailView):
+class VoteDetailView(DetailView):
     model = VoteSession
     template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['canvote'] = False
+        if self.request.user.is_authenticated:
+            session = VoteSession.objects.get(id=self.kwargs['pk'])
+            canvote = IsUserCanVote(session, self.request.user) and session.IsSessionCanVote()
+            context['canvote'] = canvote
+        return context
 
 
 class Vote(View):
@@ -32,24 +40,16 @@ class Vote(View):
     def post(self, request, pk):
         form = VoteForm(request.POST)
         if form.is_valid():
-            isvote = False
             session = VoteSession.objects.get(id=pk)
             form = form.save(commit=False)
             form.voter = request.user
             form.session = session
-            queryset = VoteRecord.objects.filter(session=form.session)
-            if queryset:
-                for voteform in queryset:
-                    if voteform.voter == request.user: #代表已經對這個session進行過投票
-                        isvote=True
-                        break
-            if isvote:
-                pass
-            else:
+
+            if IsUserCanVote(form.session, request.user) and form.session.IsSessionCanVote():
                 Agree = form.is_agree
                 if Agree:
                     session.agree +=1
-                else :
+                else:
                     session.disagree+=1
                 session.total+=1
                 session.save()
@@ -74,5 +74,14 @@ class CreateVoteSession(View):
             form.organizer = user
             form.save()
             redirect("/votesystem")
-        return render(request, "create.html", locals())
+        redirect("/votesystem")
 # Create your views here.
+
+
+def IsUserCanVote(session, user):
+    queryset = VoteRecord.objects.filter(session=session)
+    if queryset:
+        for voteform in queryset:
+            if voteform.voter == user:  # 代表已經對這個session進行過投票
+                return False
+    return True

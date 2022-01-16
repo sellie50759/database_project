@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 
 class VoteSession(models.Model):
@@ -12,6 +13,12 @@ class VoteSession(models.Model):
     disagree = models.IntegerField(default=0)
     total = models.IntegerField(default=0)
     description = models.CharField(max_length=255)
+
+    def IsSessionCanVote(self):
+        if self.start_time <= date.today() <= self.end_time:
+            return True
+        else:
+            return False
 
 
 class VoteRecord(models.Model):

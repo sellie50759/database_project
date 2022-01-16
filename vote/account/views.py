@@ -14,7 +14,7 @@ class UserCreateView(CreateView):
     model = User
     form_class = RegisterForm  # 使用的表單類別
     template_name = 'create.html'
-    success_url = '/account'  # 儲存成功後要導向的網址
+    success_url = '/account/login'  # 儲存成功後要導向的網址
 
 
 class Login(View):

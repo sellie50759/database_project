@@ -9,6 +9,7 @@ class DateInput(forms.DateInput):
 
 class VoteForm(forms.ModelForm):
     is_agree = forms.BooleanField(required=False,label="同意")
+
     class Meta:
         model = VoteRecord
         fields = ["is_agree"]
