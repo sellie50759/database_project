@@ -39,3 +39,10 @@ class Logout(View):
         logout(request)
         return redirect('login')  # 重新導向到登入畫面
 # Create your views here.
+
+class Userlist(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        users = User.objects.all()
+        user = request.user
+        return render(request, 'Userlist.html', locals())

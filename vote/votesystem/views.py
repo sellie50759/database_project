@@ -73,8 +73,8 @@ class CreateVoteSession(View):
             form = form.save(commit=False)
             form.organizer = user
             form.save()
-            redirect("/votesystem")
-        redirect("/votesystem")
+            return redirect("/votesystem")
+        return redirect("/votesystem")
 # Create your views here.
 
 
